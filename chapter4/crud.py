@@ -75,7 +75,7 @@ def get_teams(db: Session,
     if team_name:
         query = query.filter(models.Team.tema_name == team_name)
     if league_id: 
-        query = query.filter(models.Tema.league_id == league_id)
+        query = query.filter(models.Team.league_id == league_id)
     return query.offset(skip).limit(limit).all()
 
 def get_player_count(db: Session):

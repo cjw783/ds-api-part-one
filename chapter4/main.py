@@ -28,6 +28,7 @@ def read_players(skip: int = 0,
                  db: Session = Depends(get_db)):
     players = crud.get_players(db, 
                                skip=skip,
+                               limit=limit,
                                min_last_changed_date=minimum_last_changed_date,
                                first_name=first_name,
                                last_name=last_name)
@@ -45,7 +46,7 @@ def read_performances(skip: int = 0,
                       limit: int = 100,
                       minimum_last_changed_date: date = None,
                       db: Session = Depends(get_db)):
-    performances = crud.get_performances(db, skip=skip, min_last_changed_date=minimum_last_changed_date)
+    performances = crud.get_performances(db, skip=skip, limit=limit, min_last_changed_date=minimum_last_changed_date)
     return performances
 
 @app.get("/v0/leagues/{league_id}", response_model=schemas.League)
@@ -55,6 +56,7 @@ def read_league(league_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="리그를 찾을 수 없습니다!")
     return league
 
+@app.get("/v0/leagues/", response_model=list[schemas.League])
 def read_leagues(skip: int = 0,
                  limit: int = 100,
                  minimum_last_changed_date: date = None,
